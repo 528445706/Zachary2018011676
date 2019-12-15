@@ -1,0 +1,226 @@
+<DOCTYPE html>
+	<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>homework</title>
+		<script src="js/animate.js"></script>
+		<style>
+		*{
+			padding:0;
+			margin:0;
+		}
+		body{
+			height:500px;
+			border-top:0px;
+			border-bottom:0px;
+			border-right:3px solid black;
+			border-left:3px solid black;
+}
+
+		ul,li{
+			list-style:none;
+		}
+		.box{
+			width:1200px;
+			height:380px;
+			border:1px solid red;
+			margin:100px auto;
+			position:relative;
+			overflow:hidden;
+		}
+		.slider{
+			width:8400px;
+			position:absolute;
+			left:-1200px;
+		}
+		.slide{
+			width:1200px;
+			height:380px;
+			float:left;
+		}
+		.box>span{
+			display:block;
+			width:300px;
+			height:50px;
+			text-align: center;
+			cursor:pointer;
+			color:;
+			top:175px;
+			line-height:50px;
+			background:rgb(255,0,0);
+			font-size:30px;
+			position:absolute;
+			opacity:0;	
+		}
+		#left{
+			left:30px;
+			width:20px;
+		}
+		#right{
+			right:30px;
+			width:20px;
+		}
+		.nav{
+			position:absolute;
+			left:500px;
+			bottom:20px;
+		}
+		.nav>li{
+			float:left;
+			width:20px;
+			height:20px;
+			background:#ccc;
+			cursor:pointer;
+			margin:0 10px;
+			border-radius:50%;
+		}
+		#nav>.active{
+			background:red;
+			color:white;
+			text-align:center;
+		}
+		#ma{
+			position:relative;
+			left:300px;
+		}
+		#mma{
+			height:17.5px;
+			font-size:10px;
+			font-style:normal;
+			font-weight:bolder;
+			line-height:17.5px;
+			color:red;	
+			position:relative;
+			left:1215px;
+			top:0px;
+		}
+		#mmma{
+			width:1215px;
+			height:17.5px;
+			position:absolute;
+			right:0px;
+			top:0;
+			overflow:hidden;
+		}
+		.txt{
+			background-color:#ccc;
+			height:17.5px;
+			position:relative;
+		}
+	</style>
+	</head>
+	<body>
+		<div class="txt">
+		<img id="ma" src="images/a15.png">
+		<div id="mmma">			
+			<div id="mma" class="h">[温馨提示]最近有不少不法分子在网上骗人，请大家注意！！！</div>
+		</div>
+	</div>
+
+		<div class="box" id="box">
+			<div class="slider" id="slider">
+				<div class="slide"><img src="images/b1.png" alt=""></div>
+				<div class="slide"><img src="images/b2.png" alt=""></div>
+				<div class="slide"><img src="images/b3.png" alt=""></div>				
+				<div class="slide"><img src="images/b4.png" alt=""></div>
+				<div class="slide"><img src="images/b5.png" alt=""></div>
+			</div>
+			<span id="left"><</span> 
+			<span id="right">></span>
+			<ul class="nav" id="nav">
+				<li class="active">1</li>
+				<li>2</li>
+				<li>3</li>
+				<li>4</li>
+				<li>5</li>
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var box=document.getElementById("box");
+		var oNavlist=document.getElementById("nav").children;
+		var slider=document.getElementById("slider");
+		var left=document.getElementById("left");
+		var right=document.getElementById("right");
+		var index=1;
+		var timer;
+		var ismoving=false;
+		var body=document.body;
+		var one=document.getElementById("mmma");
+		var two=document.getElementById("mma");
+		body.onload=function(){
+			setInterval(function(){
+				var now=parseInt(getStyle(mma,"left"));
+				if(now<-276){
+					console.log(now);
+					now=1215;
+				}
+				mma.style.left=now-3+"px";
+			},60)
+		}
+		function next(){
+			if(ismoving){
+				return;
+			}
+			ismoving=true;
+			index++;
+			navchange()
+			animate(slider,{left:-1200*index},function(){
+				if(index==6){
+					slider.style.left="-1200px";
+					index=1;
+				}
+				ismoving=false;
+			});
+		}
+		function prev(){
+			if(ismoving){
+				return;
+			}
+			ismoving=true;
+			index--;
+			navchange()
+			animate(slider,{left:-1200*index},function(){
+				if(index==0){
+					slider.style.left="-1200px";
+					index=5;
+				}
+				ismoving=false;
+			});
+		}
+		var timer=setInterval(next,3000);
+		box.onmouseover=function(){
+			animate(left,{opacity:50});
+			animate(right,{opacity:50});
+			clearInterval(timer);
+		}
+		box.onmouseout=function(){
+			animate(left,{opacity:0});
+			animate(right,{opacity:0});
+			timer=setInterval(next,3000);
+		}
+		right.onclick=next;
+		left.onclick=prev;
+		for(var i=0;i<oNavlist.length;++i){
+			oNavlist[i].idx=i;
+			oNavlist[i].onclick=function(){
+				index=this.idx+1;
+				navchange();
+				animate(slider,{left:-1200*index})
+			}
+		}
+		function navchange(){
+			for(var i=0;i<oNavlist.length;++i){
+				oNavlist[i].className="";
+			}
+			if(index==6){
+				oNavlist[0].className="active";
+			}else if(index==0){
+				oNavlist[4].className="active";
+			}else{
+				oNavlist[index-1].className="active";
+			}
+
+		}
+	</script>
+	</html>
